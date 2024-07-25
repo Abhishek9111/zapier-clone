@@ -10,15 +10,15 @@ router.post("/signup", async (req, res) => {
   const username: string = req.body;
   const parsedData = SignupSchema.safeParse(username);
 
-  if (!parsedData.success) {
-    return res.status(411).json({
-      message: "Incorrect inputs",
-    });
-  }
+  // if (!parsedData.success) {
+  //   return res.status(411).json({
+  //     message: "Incorrect inputs",
+  //   });
+  // }
 
   const userExists = await prismaClient.user.findFirst({
     where: {
-      email: parsedData.data.username,
+      email: parsedData.data?.username,
     },
   });
   if (userExists) {
@@ -28,9 +28,14 @@ router.post("/signup", async (req, res) => {
   }
   await prismaClient.user.create({
     data: {
+      //@ts-ignore
       email: parsedData.data.username,
       //   IMPLEMENT HASHING HERE
+      //@ts-ignore
+
       password: parsedData.data.password,
+      //@ts-ignore
+
       name: parsedData.data.name,
     },
   });

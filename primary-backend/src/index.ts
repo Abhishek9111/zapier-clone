@@ -9,5 +9,5 @@ app.use(cors());
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/zap", zapRouter);
-
+//please migrate to start server rightly
 app.listen(3000);

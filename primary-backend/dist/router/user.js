@@ -21,16 +21,17 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config");
 const router = (0, express_1.Router)();
 router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const username = req.body;
     const parsedData = types_1.SignupSchema.safeParse(username);
-    if (!parsedData.success) {
-        return res.status(411).json({
-            message: "Incorrect inputs",
-        });
-    }
+    // if (!parsedData.success) {
+    //   return res.status(411).json({
+    //     message: "Incorrect inputs",
+    //   });
+    // }
     const userExists = yield db_1.prismaClient.user.findFirst({
         where: {
-            email: parsedData.data.username,
+            email: (_a = parsedData.data) === null || _a === void 0 ? void 0 : _a.username,
         },
     });
     if (userExists) {
@@ -40,9 +41,12 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     yield db_1.prismaClient.user.create({
         data: {
+            //@ts-ignore
             email: parsedData.data.username,
             //   IMPLEMENT HASHING HERE
+            //@ts-ignore
             password: parsedData.data.password,
+            //@ts-ignore
             name: parsedData.data.name,
         },
     });
