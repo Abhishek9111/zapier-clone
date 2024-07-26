@@ -24,7 +24,10 @@ export default function () {
             onClick={() => {}}
           />
         </div>
-        <div className="flex justify-center w-full py-2">
+        <div
+          className="flex flex-col
+         justify-center w-full py-2"
+        >
           {selectedActions.map((action, index) => (
             <div className="pt-2 flex justify-center">
               <ZapCell
