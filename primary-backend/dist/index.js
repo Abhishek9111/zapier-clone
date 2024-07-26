@@ -12,11 +12,6 @@ const action_1 = require("./router/action");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // OR specify your domain like 'https://example.com'
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
 // app.post("/zap/signup", (req, res) => {});
 app.use("/api/v1/user", user_1.userRouter);
 app.use("/api/v1/zap", zap_1.zapRouter);
