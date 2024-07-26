@@ -7,10 +7,20 @@ const express_1 = __importDefault(require("express"));
 const user_1 = require("./router/user");
 const zap_1 = require("./router/zap");
 const cors_1 = __importDefault(require("cors"));
+const trigger_1 = require("./router/trigger");
+const action_1 = require("./router/action");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // OR specify your domain like 'https://example.com'
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 // app.post("/zap/signup", (req, res) => {});
 app.use("/api/v1/user", user_1.userRouter);
 app.use("/api/v1/zap", zap_1.zapRouter);
+app.use("/api/v1/trigger", trigger_1.triggerRouter);
+app.use("/api/v1/action", action_1.actionRouter);
+//please migrate to start server rightly
 app.listen(3000);

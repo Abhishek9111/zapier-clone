@@ -6,29 +6,32 @@ import { ZapCreateSchema } from "../types";
 const router = Router();
 
 router.post("/", authMiddleware, async (req, res) => {
-  //@ts-ignore
-  const id = req.id;
-
+  // @ts-ignore
+  const id: string = req.id;
   const body = req.body;
   const parsedData = ZapCreateSchema.safeParse(body);
+
   if (!parsedData.success) {
     return res.status(411).json({
       message: "Incorrect inputs",
     });
   }
+
   const zapId = await prismaClient.$transaction(async (tx) => {
     const zap = await prismaClient.zap.create({
       data: {
-        userId: id,
+        userId: parseInt(id),
         triggerId: "",
         actions: {
           create: parsedData.data.actions.map((x, index) => ({
             actionId: x.availableActionId,
             sortingOrder: index,
+            metadata: x.actionMetadata,
           })),
         },
       },
     });
+
     const trigger = await tx.trigger.create({
       data: {
         triggerId: parsedData.data.availableTriggerId,
@@ -36,7 +39,7 @@ router.post("/", authMiddleware, async (req, res) => {
       },
     });
 
-    await prismaClient.zap.update({
+    await tx.zap.update({
       where: {
         id: zap.id,
       },
@@ -44,6 +47,7 @@ router.post("/", authMiddleware, async (req, res) => {
         triggerId: trigger.id,
       },
     });
+
     return zap.id;
   });
   return res.json({

@@ -16,7 +16,7 @@ const middleware_1 = require("../middleware");
 const types_1 = require("../types");
 const router = (0, express_1.Router)();
 router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //@ts-ignore
+    // @ts-ignore
     const id = req.id;
     const body = req.body;
     const parsedData = types_1.ZapCreateSchema.safeParse(body);
@@ -28,12 +28,13 @@ router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, vo
     const zapId = yield db_1.prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         const zap = yield db_1.prismaClient.zap.create({
             data: {
-                userId: id,
+                userId: parseInt(id),
                 triggerId: "",
                 actions: {
                     create: parsedData.data.actions.map((x, index) => ({
                         actionId: x.availableActionId,
                         sortingOrder: index,
+                        metadata: x.actionMetadata,
                     })),
                 },
             },
@@ -44,7 +45,7 @@ router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, vo
                 zapId: zap.id,
             },
         });
-        yield db_1.prismaClient.zap.update({
+        yield tx.zap.update({
             where: {
                 id: zap.id,
             },

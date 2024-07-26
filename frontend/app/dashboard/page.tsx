@@ -7,7 +7,7 @@ import axios from "@/node_modules/axios/index";
 import { useRouter } from "@/node_modules/next/navigation";
 import { Router } from "express";
 import { useEffect, useState } from "react";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL, HOOKS_URL } from "../config";
 interface Zap {
   id: string;
   triggerId: string;
@@ -41,7 +41,7 @@ function useZaps() {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/api/v1/zap/`, {
+      .get(`${BACKEND_URL}/api/v1/zap`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
