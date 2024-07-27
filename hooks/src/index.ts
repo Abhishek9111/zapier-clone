@@ -28,6 +28,6 @@ app.post("/hooks/catch/:userId/:zapId", async (req, res) => {
   //push it to kafka/redis queue
 });
 
-app.listen(3000, () => {
+app.listen(3002, () => {
   console.log("server started");
 });
