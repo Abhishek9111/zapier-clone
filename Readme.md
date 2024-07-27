@@ -1,7 +1,3 @@
-Sure, I'll help organize your README file and add a description at the top. Here's a polished version:
-
----
-
 # End-to-End Backend Clone using Kafka, Postgres, Node, and Next.js
 
 This project is an end-to-end backend system clone that leverages Kafka for event streaming, Postgres for database management, Node.js for server-side logic, and Next.js for the frontend. It serves as a comprehensive example of integrating these technologies to build a robust and scalable backend system.
@@ -79,5 +75,3 @@ npm run dev
 - Processor
 - Hooks
 - Worker
-
----
