@@ -17,29 +17,28 @@ const client_1 = require("@prisma/client");
 const client = new client_1.PrismaClient();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+// https://hooks.zapier.com/hooks/catch/17043103/22b8496/
+// password logic
 app.post("/hooks/catch/:userId/:zapId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.userId;
     const zapId = req.params.zapId;
     const body = req.body;
-    //storing a new trigger
+    // store in db a new trigger
     yield client.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
-        const run = yield client.zapRun.create({
+        const run = yield tx.zapRun.create({
             data: {
                 zapId: zapId,
                 metadata: body,
             },
         });
-        yield client.zapRunOutBox.create({
+        yield tx.zapRunOutbox.create({
             data: {
                 zapRunId: run.id,
             },
         });
     }));
-    //   kafkaPublisher.publish({
-    //     zapId
-    //   })
-    //push it to kafka/redis queue
+    res.json({
+        message: "Webhook received",
+    });
 }));
-app.listen(3002, () => {
-    console.log("server started");
-});
+app.listen(3002);

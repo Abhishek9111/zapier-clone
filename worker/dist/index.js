@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import { PrismaClient } from "@prisma/client";
 const kafkajs_1 = require("kafkajs");
 // const client = new PrismaClient();
-const TOPIC_NAME = "zap_events";
+const TOPIC_NAME = "zap-events";
 const kafka = new kafkajs_1.Kafka({
     clientId: "outbox-processor",
     brokers: ["localhost:9092"],
@@ -32,7 +32,8 @@ function main() {
                     value: (_b = message.value) === null || _b === void 0 ? void 0 : _b.toString(),
                 });
                 //slowing down the email out process
-                yield new Promise((r) => setTimeout(r, 1000));
+                yield new Promise((r) => setTimeout(r, 500));
+                console.log("processing done");
                 yield consumer.commitOffsets([
                     {
                         topic: TOPIC_NAME,

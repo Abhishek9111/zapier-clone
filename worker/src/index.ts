@@ -2,7 +2,7 @@
 import { Kafka } from "kafkajs";
 
 // const client = new PrismaClient();
-const TOPIC_NAME = "zap_events";
+const TOPIC_NAME = "zap-events";
 const kafka = new Kafka({
   clientId: "outbox-processor",
   brokers: ["localhost:9092"],
@@ -24,7 +24,8 @@ async function main() {
       });
 
       //slowing down the email out process
-      await new Promise((r) => setTimeout(r, 1000));
+      await new Promise((r) => setTimeout(r, 500));
+      console.log("processing done");
 
       await consumer.commitOffsets([
         {
